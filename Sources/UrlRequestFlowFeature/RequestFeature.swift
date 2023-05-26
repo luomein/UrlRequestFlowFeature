@@ -15,7 +15,12 @@ public struct RequestFeature{
     
     public struct State: Equatable, Identifiable{
         public var id: UUID
-        public var runType : RunType  
+        public var runType : RunType
+        
+        public init(id: UUID, runType: RunType) {
+            self.id = id
+            self.runType = runType
+        }
         
         public var internalParameters: IdentifiedArrayOf<RequestInternalParameterFeature.State> = []
         public var inputParameters: IdentifiedArrayOf<SharableParameter> = []
@@ -27,9 +32,9 @@ public struct RequestFeature{
         public var httpMethod : HttpMethod?
         public var httpResponseType : HttpResponseType = .JsonDict
         
-        public var httpBodyKeyValuePairs : IdentifiedArrayOf<KeyPairOfDictionaryUnit>
-        public var httpHeadKeyValuePairs : IdentifiedArrayOf<KeyPairOfDictionaryUnit>
-        public var urlQueryItemKeyValuePairs : IdentifiedArrayOf<KeyPairOfDictionaryUnit>
+        public var httpBodyKeyValuePairs : IdentifiedArrayOf<KeyPairOfDictionaryUnit> = []
+        public var httpHeadKeyValuePairs : IdentifiedArrayOf<KeyPairOfDictionaryUnit> = []
+        public var urlQueryItemKeyValuePairs : IdentifiedArrayOf<KeyPairOfDictionaryUnit> = []
     }
 }
 
