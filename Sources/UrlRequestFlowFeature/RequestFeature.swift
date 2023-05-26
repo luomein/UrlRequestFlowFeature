@@ -12,15 +12,36 @@ public struct RequestFeature{
     @Dependency(\.uuid) var uuid
     @Dependency(\.oauth2DependencyManager) var oauth2DependencyManager
     
+    public init(){
+        
+    }
     
     public struct State: Equatable, Identifiable{
         public var id: UUID
         public var runType : RunType
         
-        public init(id: UUID, runType: RunType) {
+        public init(id: UUID, runType: RunType
+                    ,internalParameters : IdentifiedArrayOf<RequestInternalParameterFeature.State> = []
+                    ,inputParameters: IdentifiedArrayOf<SharableParameter> = []
+                    ,outputParameters: IdentifiedArrayOf<SharableParameter> = []
+                    ,outputParameterConfigurations: IdentifiedArrayOf<HttpResponseOutputParameterConfiguration> = []
+                    ,httpMethod : HttpMethod? = nil
+                    ,httpBodyKeyValuePairs : IdentifiedArrayOf<KeyPairOfDictionaryUnit> = []
+                    ,httpHeadKeyValuePairs : IdentifiedArrayOf<KeyPairOfDictionaryUnit> = []
+                    ,urlQueryItemKeyValuePairs : IdentifiedArrayOf<KeyPairOfDictionaryUnit> = []
+        ) {
             self.id = id
             self.runType = runType
+            self.internalParameters = internalParameters
+            self.httpMethod = httpMethod
+            self.httpBodyKeyValuePairs = httpBodyKeyValuePairs
+            self.httpHeadKeyValuePairs = httpHeadKeyValuePairs
+            self.urlQueryItemKeyValuePairs = urlQueryItemKeyValuePairs
         }
+//        RequestFeature.State(id: uuid
+//                             , runType: runType, internalParameters: internalParameters
+//                             , httpMethod: httpMethod
+//                            , httpBodyKeyValuePairs: [], httpHeadKeyValuePairs: [], urlQueryItemKeyValuePairs: urlQueryItemKeyValuePairs)
         
         public var internalParameters: IdentifiedArrayOf<RequestInternalParameterFeature.State> = []
         public var inputParameters: IdentifiedArrayOf<SharableParameter> = []
