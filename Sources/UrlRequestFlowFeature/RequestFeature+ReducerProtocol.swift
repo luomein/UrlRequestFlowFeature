@@ -17,7 +17,12 @@ extension RequestFeature: ReducerProtocol{
                 break
             
             case .setUrlComponent(let parameter, let value):
-                state.internalParameters.append(.init(id: uuid(), key: parameter.rawValue, value: .init(value: value)))
+                if let existingParameter = state.internalParameters.first { $0.key == parameter.rawValue }{
+                    state.internalParameters[id: existingParameter.id]!.value = .init(value: value)
+                }
+                else{
+                    state.internalParameters.append(.init(id: uuid(), key: parameter.rawValue, value: .init(value: value)))
+                }
             case .setOutputParameterConfiguration(let value):
                 state.outputParameterConfigurations.append(.init(id: uuid()
                                                                  , reader:value.reader))
