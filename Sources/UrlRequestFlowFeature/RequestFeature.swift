@@ -22,9 +22,11 @@ public struct RequestFeature{
         
         public init(id: UUID, runType: RunType
                     ,internalParameters : IdentifiedArrayOf<RequestInternalParameterFeature.State> = []
+                    
                     ,inputParameters: IdentifiedArrayOf<SharableParameter> = []
                     ,outputParameters: IdentifiedArrayOf<SharableParameter> = []
                     ,outputParameterConfigurations: IdentifiedArrayOf<HttpResponseOutputParameterConfiguration> = []
+                    
                     ,httpMethod : HttpMethod? = nil
                     ,httpBodyKeyValuePairs : IdentifiedArrayOf<KeyPairOfDictionaryUnit> = []
                     ,httpHeadKeyValuePairs : IdentifiedArrayOf<KeyPairOfDictionaryUnit> = []
@@ -33,6 +35,11 @@ public struct RequestFeature{
             self.id = id
             self.runType = runType
             self.internalParameters = internalParameters
+            
+            self.inputParameters = inputParameters
+            self.outputParameters = outputParameters
+            self.outputParameterConfigurations = outputParameterConfigurations
+            
             self.httpMethod = httpMethod
             self.httpBodyKeyValuePairs = httpBodyKeyValuePairs
             self.httpHeadKeyValuePairs = httpHeadKeyValuePairs

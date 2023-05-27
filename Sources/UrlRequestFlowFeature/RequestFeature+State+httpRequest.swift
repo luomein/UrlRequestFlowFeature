@@ -42,10 +42,12 @@ public extension RequestFeature.State{
     }
     public var urlqueryItems : [URLQueryItem]?{
         if urlQueryItemKeyValuePairs.count == 0{return nil}
-        return urlQueryItemKeyValuePairs
+        let urlqueryItems  : [URLQueryItem] = urlQueryItemKeyValuePairs
                .compactMap{
-                guard let key = getParameterValueByKey(key: $0.keyOfKey) else{return nil}
+                   guard let key = getParameterValueByKey(key: $0.keyOfKey), key.count != 0 else{return nil}
                 return URLQueryItem(name: key, value: getParameterValueByKey(key: $0.keyOfValue)) }
+        if urlqueryItems.count == 0 {return nil}
+        else{return urlqueryItems}
     }
     public var urlcomponents : URLComponents{
         var urlcomponents = URLComponents()

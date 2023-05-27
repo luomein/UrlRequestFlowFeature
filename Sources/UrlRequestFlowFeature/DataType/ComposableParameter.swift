@@ -12,6 +12,11 @@ import ComposableArchitecture
 public struct ComposableValue: Equatable{
     public var value : String
     public var lookupKey : String?
+    
+    public init(value: String, lookupKey: String? = nil) {
+        self.value = value
+        self.lookupKey = lookupKey
+    }
 }
 
 public struct ComposableParameter: Equatable, Identifiable{
@@ -19,6 +24,11 @@ public struct ComposableParameter: Equatable, Identifiable{
     public let key: String
     public var value: ComposableValue
    
+    public init(id: UUID, key: String, value: ComposableValue) {
+        self.id = id
+        self.key = key
+        self.value = value
+    }
     
     public static func getParameterValueByKey(
         key: String

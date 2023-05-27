@@ -15,13 +15,37 @@ extension RequestFeature: ReducerProtocol{
             switch action{
             case .outputParameterUpdated:
                 break
-            
-            case .setUrlComponent(let parameter, let value):
+            case .setUrlComponentByParameterKey(let parameter, var lookupKey):
                 if let existingParameter = state.internalParameters.first { $0.key == parameter.rawValue }{
-                    state.internalParameters[id: existingParameter.id]!.value = .init(value: value)
+                    if lookupKey.count != 0{
+                        state.internalParameters[id: existingParameter.id]!.value = .init(value: "", lookupKey: lookupKey)
+                    }
+                    else{
+                        state.internalParameters.remove(id: existingParameter.id)
+                        //state.internalParameters[id: existingParameter.id]!.value.lookupKey = nil
+                    }
                 }
                 else{
-                    state.internalParameters.append(.init(id: uuid(), key: parameter.rawValue, value: .init(value: value)))
+                    if lookupKey.count != 0{
+                        state.internalParameters.append(.init(id: uuid(), key: parameter.rawValue, value: .init(value: "",lookupKey: lookupKey)))
+                    }
+                }
+            case .setUrlComponent(let parameter, var value):
+                if parameter == .urlcomponents_path && value.count > 0 && !value.starts(with: "/"){
+                    value = "/" + value
+                }
+                if let existingParameter = state.internalParameters.first { $0.key == parameter.rawValue }{
+                    if value.count != 0{
+                        state.internalParameters[id: existingParameter.id]!.value = .init(value: value)
+                    }
+                    else{
+                        state.internalParameters.remove(id: existingParameter.id)
+                    }
+                }
+                else{
+                    if value.count != 0{
+                        state.internalParameters.append(.init(id: uuid(), key: parameter.rawValue, value: .init(value: value)))
+                    }
                 }
             case .setOutputParameterConfiguration(let value):
                 state.outputParameterConfigurations.append(.init(id: uuid()
@@ -32,7 +56,7 @@ extension RequestFeature: ReducerProtocol{
 
                 }
 
-            case .setUrlComponentQueryItem(let key, let value):
+            case .setUrlComponentQueryItem(let key, let value),.addUrlComponentQueryItem(let key, let value):
                 state.urlQueryItemKeyValuePairs.append(.init(id: uuid(), keyOfKey: key.key, keyOfValue: value.key))
                 state.internalParameters.append(.init(id: uuid(), key: key.key, value: key.value))
                 state.internalParameters.append(.init(id: uuid(), key: value.key, value: value.value))
@@ -93,10 +117,30 @@ extension RequestFeature: ReducerProtocol{
                         //try await sendHttpRequest(request: state.httpRequest)
                     }
                 }
+            case .joinActionUrlComponentQueryItem(let id, let subAction):
+                switch subAction {
+                case .setKeyOfKey(let parameter), .setKeyOfValue(let parameter):
+                    let key = parameter.key
+                    if let existingParameter = state.internalParameters.first(where: {
+                        $0.key == key
+                    }){
+                        state.internalParameters[id: existingParameter.id]?.value = parameter.value
+                    }
+                    else{
+                        state.internalParameters.append(.init(id: uuid(), key: parameter.key, value: parameter.value))
+                    }
+                }
+//                state.urlQueryItemKeyValuePairs.append(.init(id: uuid(), keyOfKey: key.key, keyOfValue: value.key))
+//                state.internalParameters.append(.init(id: uuid(), key: key.key, value: key.value))
+//                state.internalParameters.append(.init(id: uuid(), key: value.key, value: value.value))
+            case .joinActionSharableParameterFeature(let id, let subAction):
+                break
             default:
                 fatalError()
             }
             return .none
         }
+        .forEach(\.urlQueryItemKeyValuePairs, action: /Action.joinActionUrlComponentQueryItem, element: {KeyPairOfDictionaryUnitFeature()})
+        .forEach(\.inputParameters, action: /Action.joinActionSharableParameterFeature, element: {SharableParameterFeature()})
     }
 }
