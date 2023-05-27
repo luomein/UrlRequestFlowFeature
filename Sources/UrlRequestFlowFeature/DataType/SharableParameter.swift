@@ -14,5 +14,10 @@ public struct SharableParameter: Equatable, Identifiable{
     public var name: String
     public var value: String
     
-    
+    public init(id: UUID, key: String, name: String, value: String) {
+        self.id = id
+        self.key = key
+        self.name = name
+        self.value = value
+    }
 }
