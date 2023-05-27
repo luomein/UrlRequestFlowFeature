@@ -14,6 +14,7 @@ public extension RequestFeature{
         case setUrlComponentByParameterKey(HttpParameterKey,String)
         
         case addUrlComponentQueryItem(RequestInternalParameterFeature.State,RequestInternalParameterFeature.State)
+        case addedUrlComponentQueryItem(itemID:KeyPairOfDictionaryUnitFeature.State.ID, parameterID: [RequestInternalParameterFeature.State.ID])
         case setUrlComponentQueryItem(RequestInternalParameterFeature.State,RequestInternalParameterFeature.State)
         
         case setHttpBody(RequestInternalParameterFeature.State,RequestInternalParameterFeature.State)

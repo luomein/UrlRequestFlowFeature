@@ -55,11 +55,16 @@ extension RequestFeature: ReducerProtocol{
                     state.outputParameters.append(.init(id: uuid(), key: key, name: key, value: ""))
 
                 }
-
+            case   .addedUrlComponentQueryItem(let itemID ,let parameterID):
+                break
             case .setUrlComponentQueryItem(let key, let value),.addUrlComponentQueryItem(let key, let value):
-                state.urlQueryItemKeyValuePairs.append(.init(id: uuid(), keyOfKey: key.key, keyOfValue: value.key))
-                state.internalParameters.append(.init(id: uuid(), key: key.key, value: key.value))
-                state.internalParameters.append(.init(id: uuid(), key: value.key, value: value.value))
+                let itemID = UUID()
+                let parameterID_key =  UUID()
+                let parameterID_value =  UUID()
+                state.urlQueryItemKeyValuePairs.append(.init(id: itemID, keyOfKey: key.key, keyOfValue: value.key))
+                state.internalParameters.append(.init(id: parameterID_key, key: key.key, value: key.value))
+                state.internalParameters.append(.init(id: parameterID_value, key: value.key, value: value.value))
+                return .send(.addedUrlComponentQueryItem(itemID: itemID, parameterID: [parameterID_key,parameterID_value]))
             case .setHttpMethod(let value):
                 state.httpMethod = value
             case .setHttpBody(let key, let value):
