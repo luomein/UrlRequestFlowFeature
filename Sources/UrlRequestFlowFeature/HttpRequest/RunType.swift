@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum RunType{
+public enum RunType: String{
     case urlRequest
     case webAuth
 }

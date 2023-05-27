@@ -21,8 +21,8 @@ struct SampleKeyPairOfDictionaryUnitView: View{
             }
             return Picker(selection: viewStore.binding(get: {_ in internalParameter?.value.lookupKey ?? ""}, send: {
                 composableParameter.value.lookupKey = $0
-                action.updateParameter(parameter: composableParameter)
-                return action
+                let updatedAction = action.updateParameter(parameter: composableParameter)
+                return updatedAction
             })) {
                 Text("").tag("")
                 ForEach(sharedParameters) {
@@ -45,9 +45,8 @@ struct SampleKeyPairOfDictionaryUnitView: View{
                         }
                         ,send:{
                             composableParameter.value.value = $0
-                            action.updateParameter(parameter: composableParameter)
-                            //RequestFeature.Action.setUrlComponent(setKey, $0)
-                            return action
+                            let updatedAction = action.updateParameter(parameter: composableParameter)
+                            return updatedAction
                         }))
             }
         }
