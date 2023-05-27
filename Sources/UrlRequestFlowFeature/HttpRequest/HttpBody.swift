@@ -8,6 +8,6 @@
 import Foundation
 
 
-public enum HttpBodyContentType{
+public enum HttpBodyContentType: String{
     case dict
 }
