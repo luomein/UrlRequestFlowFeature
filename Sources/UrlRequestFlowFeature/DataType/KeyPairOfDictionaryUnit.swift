@@ -10,8 +10,12 @@ import ComposableArchitecture
 
 public struct KeyPairOfDictionaryUnit : Equatable, Identifiable{
     public let id: UUID
-    var keyOfKey : String
-    var keyOfValue : String
+    public var keyOfKey : String
+    public var keyOfValue : String
     
-    
+    public init(id: UUID, keyOfKey: String, keyOfValue: String) {
+        self.id = id
+        self.keyOfKey = keyOfKey
+        self.keyOfValue = keyOfValue
+    }
 }
